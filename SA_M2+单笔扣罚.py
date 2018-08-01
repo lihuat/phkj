@@ -1,8 +1,15 @@
 import pandas as pd
 import numpy as np
 
+def yikou():
+    # 汇总首次M2和M2+的已经扣罚和退还的
+    data1 = pd.read_excel("扣罚汇总/M2+扣罚汇总.xlsx")
+    data2 = pd.read_excel("扣罚汇总/首次M2扣罚汇总.xlsx")
+    yikou = pd.concat([data1, data2])
+    return yikou
+yikou = yikou()
+
 m2_plus = pd.read_excel('M2+/m2_plus.xlsx')
-yikou = pd.read_excel('M2+/风控跟踪表.xlsx')
 m2_plus = m2_plus[['贷款编号','贷款金额','产品名称','SA工号','SA姓名']]
 m2_plus['贷款编号'] = m2_plus['贷款编号'].astype('O')
 m2_plus['SA工号'] = m2_plus['SA工号'].astype('O')
@@ -113,7 +120,7 @@ for i in range(len(m2_SA)):
             m2_SA.loc[i,"是否免除扣罚"] = 0
 
 
-m2_SA = m2_SA[["SA工号","是否免除扣罚"]]
+m2_SA = m2_SA[["SA工号","首次M2逾期率","M3+逾期率(%)","是否免除扣罚"]]
 
 m2_plus = pd.merge(m2_plus,m2_SA,on="SA工号",how="left")
 
