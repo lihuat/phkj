@@ -1,15 +1,12 @@
 import numpy as np
 import pandas as pd
 
-m2 = pd.read_excel('首次M2/首次M2明细表.xlsx')
-zmd = pd.read_excel('首次M2/主门店汇总.xlsx')
+m2 = pd.read_excel('首次M2/首次M2明细表.xlsx',dtype={'SA工号':"O",'贷款编号':'O'})
+zmd = pd.read_excel('首次M2/主门店汇总.xlsx',dtype={'贷款编号':'O'})
 m2 = m2[['贷款编号','贷款金额','产品名称','SA工号','SA姓名']]
-m2['贷款编号'] = m2['贷款编号'].astype('O')
-m2['SA工号'] = m2['SA工号'].astype('O')
-zmd['贷款编号'] = zmd['贷款编号'].astype('O')
 
 m2_over = pd.pivot_table(m2,index=['SA工号'],values=['贷款编号'],aggfunc=[len])
-m2_over_rate = pd.read_excel("首次m2/m2首次注册数.xlsx")#
+m2_over_rate = pd.read_excel("首次m2/m2首次注册数.xlsx",dtype={'SA工号':'O'})
 m2_over = pd.merge(m2_over_rate,m2_over,on="SA工号",how="left",suffixes=('','_y'))
 m2_over['首次M2逾期率'] = 0.0
 
@@ -54,13 +51,13 @@ m2['逾期等级'] = '首次M2'
 #判断是否免除扣罚
 m2_SA = m2.drop_duplicates(["SA工号"])
 m2_SA = m2_SA[['SA工号']]
-overdue_rate_m3 = pd.read_excel("首次M2/Overdue_rate_M3.xlsx")#导入M3逾期率
-overdue_rate_m3['SA工号'] = overdue_rate_m3['SA工号'].astype('O')
+overdue_rate_m3 = pd.read_excel("首次M2/Overdue_rate_M3.xlsx",dtype={'SA工号':'O'})#导入M3逾期率
+#overdue_rate_m3['SA工号'] = overdue_rate_m3['SA工号'].astype('O')
 m2_SA = pd.merge(m2_SA,m2_over,on="SA工号",how="left",suffixes=('','_y'))
 m2_SA = pd.merge(m2_SA,overdue_rate_m3,on="SA工号",how="left",suffixes=('','_y'))
 
-people_list = pd.read_excel("首次M2/people_listing.xlsx")#导入人员清单
-people_list['SA工号'] = people_list['SA工号'].astype('O')
+people_list = pd.read_excel("首次M2/people_listing.xlsx",dtype={'SA工号':'O'})#导入人员清单
+#people_list['SA工号'] = people_list['SA工号'].astype('O')
 m2_SA = pd.merge(m2_SA,people_list, on="SA工号",how="left",suffixes=('','_y'))
 
 for i in range(len(m2_SA)):
