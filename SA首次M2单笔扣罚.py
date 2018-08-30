@@ -103,5 +103,5 @@ for i in range(len(m2)):
 
 #m2.to_excel("SA首次M2单笔扣罚.xlsx")
 m2 = m2[['贷款编号','贷款金额','SA工号','SA姓名','是否免除扣罚','SA最终扣罚']]
-m2.to_csv("数据输出/SA首次M2单笔扣罚.csv")
+m2.to_excel("数据输出/SA首次M2单笔扣罚.xlsx")
 

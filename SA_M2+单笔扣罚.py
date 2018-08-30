@@ -137,7 +137,7 @@ for i in tqdm(range(len(m2_plus))):
         print("免除扣罚出现问题，请核实！")
 
 
-m2_plus.to_csv("数据输出/SA的M2+单笔扣罚.csv")
+m2_plus.to_excel("数据输出/SA的M2+单笔扣罚.xlsx")
 
 
 
