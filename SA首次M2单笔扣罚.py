@@ -22,7 +22,7 @@ m2_over = m2_over[['SA工号','首次M2逾期率']]
 m2 = pd.merge(m2, zmd, on="贷款编号", how="left")
 m2["扣罚"] = 0
 for i in range(len(m2)):
-    if m2.loc[i, '产品名称'] == '一般产品' or m2.loc[i, '产品名称'] == '优惠产品':
+    if m2.loc[i, '产品名称'] == '一般产品' or m2.loc[i, '产品名称'] == '优惠产品' or m2.loc[i, '产品名称'] == '优惠产品A' or m2.loc[i, '产品名称'] == '优惠产品B':
         if m2.loc[i, '贷款金额'] >= 1500:
             m2.loc[i, '扣罚'] = 180
         else:

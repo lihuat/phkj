@@ -56,7 +56,7 @@ m2_plus = pd.merge(m2_plus, zmd, on="贷款编号", how="left")
 
 m2_plus["扣罚"] = 0
 for i in tqdm(range(len(m2_plus))):
-    if m2_plus.loc[i, '产品名称'] == '一般产品' or m2_plus.loc[i, '产品名称'] == '优惠产品' or m2_plus.loc[i, '产品名称'] == '广州服务类产品':
+    if m2_plus.loc[i, '产品名称'] == '一般产品' or m2_plus.loc[i, '产品名称'] == '优惠产品' or m2_plus.loc[i, '产品名称'] == '广州服务类产品' or m2_plus.loc[i, '产品名称'] == '优惠产品A' or m2_plus.loc[i, '产品名称'] == '优惠产品B':
         if m2_plus.loc[i, '贷款金额'] >= 1500:
             m2_plus.loc[i, '扣罚'] = 100
         else:
