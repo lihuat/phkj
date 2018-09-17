@@ -11,7 +11,7 @@ def yikou():
 yikou = yikou()
 
 m2_plus = pd.read_excel('M2+/m2_plus.xlsx',dtype={'贷款编号':'O','SA工号':'O'})
-m2_plus = m2_plus[['贷款编号','贷款金额','产品名称','SA工号','SA姓名']]
+m2_plus = m2_plus[['贷款编号','贷款金额','商户','门店','产品名称','SA工号','SA姓名']]
 #m2_plus['贷款编号'] = m2_plus['贷款编号'].astype('O')
 #m2_plus['SA工号'] = m2_plus['SA工号'].astype('O')
 
@@ -49,7 +49,7 @@ for i in tqdm(range(len(m2_plus))):
 
 m2_plus = m2_plus.reset_index(drop=True)  # 对索引重置
 m2_plus = pd.concat([m2_plus,m2_plus_],ignore_index=True)
-m2_plus = m2_plus[['贷款编号','贷款金额','产品名称','SA工号','SA姓名']]
+m2_plus = m2_plus[['贷款编号','贷款金额','产品名称','商户','门店','SA工号','SA姓名']]
 zmd = pd.read_excel('首次M2/主门店汇总.xlsx',dtype={'贷款编号':'O'})
 #zmd['贷款编号'] = zmd['贷款编号'].astype('O')
 m2_plus = pd.merge(m2_plus, zmd, on="贷款编号", how="left")
@@ -85,12 +85,12 @@ m2_plus['逾期等级'] = 'M2+'
 m2_SA = m2_plus.drop_duplicates(["SA工号"])
 m2_SA = m2_SA[['SA工号']]
 overdue_rate_m3 = pd.read_excel("首次M2/Overdue_rate_M3.xlsx",dtype={'SA工号':'O'})
-#overdue_rate_m3['SA工号'] = overdue_rate_m3['SA工号'].astype('O')
+
 m2_SA = pd.merge(m2_SA,m2_over,on="SA工号",how="left",suffixes=('','_y'))
 m2_SA = pd.merge(m2_SA,overdue_rate_m3,on="SA工号",how="left",suffixes=('','_y'))
 
-people_list = pd.read_excel("首次M2/people_listing.xlsx",dtype={'SA工号':'O'})
-#people_list['SA工号'] = people_list['SA工号'].astype('O')
+people_list = pd.read_excel("首次M2/people_listing.xlsx",dtype={'SA工号':'O','入岗日期转换':np.datetime64})
+people_list = people_list[['SA工号','姓名','在岗状态','入岗日期转换','结算日期','在职天数']]
 m2_SA = pd.merge(m2_SA,people_list, on="SA工号",how="left",suffixes=('','_y'))
 
 for i in tqdm(range(len(m2_SA))):
@@ -104,6 +104,7 @@ for i in tqdm(range(len(m2_SA))):
         m2_SA.loc[i,"M3+逾期率(%)"] = 0
     else:
         pass
+
 
 m2_SA["是否免除扣罚"] = 0
 for i in tqdm(range(len(m2_SA))):
@@ -120,12 +121,14 @@ for i in tqdm(range(len(m2_SA))):
             m2_SA.loc[i,'是否免除扣罚'] = 1
         else:
             m2_SA.loc[i,"是否免除扣罚"] = 0
+m2_SA = m2_SA[["SA工号","SA姓名","在岗状态","入岗日期转换","结算日期","在职天数","M3+逾期率(%)","首次M2逾期率","是否免除扣罚"]]
+m2_SA.to_excel('数据输出/SA_M2+扣罚标准.xlsx')
 
 
-m2_SA = m2_SA[["SA工号","首次M2逾期率","M3+逾期率(%)","是否免除扣罚"]]
+m2_sa = m2_SA.copy()
+m2_sa = m2_sa[['SA工号','是否免除扣罚']]
 
-m2_plus = pd.merge(m2_plus,m2_SA,on="SA工号",how="left")
-
+m2_plus = pd.merge(m2_plus,m2_sa,on="SA工号",how="left")
 
 m2_plus['SA最终扣罚'] = 0
 for i in tqdm(range(len(m2_plus))):
