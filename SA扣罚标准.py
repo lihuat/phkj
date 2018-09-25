@@ -13,21 +13,18 @@ import numpy as np
 
 #计算首次M2逾期率
 #-----------------------------------------------------------------------------------
-#导入首次M2逾期明细
-data = pd.read_excel("测试代码/M2M3逾期明细.xlsx",dtype={'贷款编号':'O','SA工号':'O'})
-#提取首次M2的数据
-m2 = data[data["首次M2"]==1]
-#透视逾期单数
-m2_over_count = pd.pivot_table(m2,index=['SA工号'],values=['贷款编号'],aggfunc=[len])
-#导入首次M2的注册数据
-m2_zc = pd.read_excel("首次m2/m2首次注册数.xlsx",dtype={'SA工号':'O'})
-m2_over_rate = pd.merge(m2_zc,m2_over_count,on="SA工号",how="left")
-#计算首次M2逾期率
-for i in range(len(m2_over_rate)):
-    m2_over_rate.loc[i,'首次M2逾期率'] = (m2_over_rate.iloc[i,3] /m2_over_rate.iloc[i,2])*100
-#得到首次M2逾期率
-m2_over_rate = m2_over_rate[['SA工号','首次M2逾期率']]
-#---------------------------------------------------------------------------------------------
+def m2_overrate():
+    data = pd.read_excel("测试代码/M2M3逾期明细.xlsx",dtype={'贷款编号':'O','SA工号':'O'})#导入首次M2逾期明细
+    m2 = data[data["首次M2"]==1]#提取首次M2的数据
+    m2_over_count = pd.pivot_table(m2,index=['SA工号'],values=['贷款编号'],aggfunc=[len])#透视逾期单数
+    m2_zc = pd.read_excel("首次m2/m2首次注册数.xlsx",dtype={'SA工号':'O'})#导入首次M2的注册数据
+    m2_over_rate = pd.merge(m2_zc,m2_over_count,on="SA工号",how="left")
+    for i in range(len(m2_over_rate)):#计算首次M2逾期率
+        m2_over_rate.loc[i,'首次M2逾期率'] = (m2_over_rate.iloc[i,3] /m2_over_rate.iloc[i,2])*100
+
+    m2_over_rate = m2_over_rate[['SA工号','首次M2逾期率']]#得到首次M2逾期率
+    return m2_over_rate
+#------------------------------------------------------------------------------------
 #M2+逾期明细
 data2 = pd.read_excel("测试代码/M2+逾期明细.xlsx",dtype={'贷款编号':'O','SA工号':'O'})
 def yikou():
@@ -96,3 +93,16 @@ for i in range(len(data_all)):
             data_all.loc[i,"是否免除扣罚"] = "不"
 data_all = data_all[["SA工号","SA姓名","在岗状态","入岗日期转换","结算日期","在职天数","M3+逾期率(%)","首次M2逾期率","是否免除扣罚"]]
 data_all.to_excel('数据输出/SA扣罚标准1.xlsx')
+
+if __name__ == '__main__':
+
+
+
+
+
+
+
+
+
+
+
