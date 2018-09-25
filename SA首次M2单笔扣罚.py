@@ -74,8 +74,7 @@ for i in range(len(m2_SA)):
         m2_SA.loc[i,"M3+逾期率(%)"] = 0
     else:
         pass
-#扣罚标准
-m2_SA.to_excel('数据输出/SA_first_M2扣罚标准.xlsx')
+
 
 m2_SA["是否免除扣罚"] = 0
 for i in range(len(m2_SA)):
@@ -93,6 +92,10 @@ for i in range(len(m2_SA)):
         else:
             m2_SA.loc[i,"是否免除扣罚"] = 0
 
+#扣罚标准
+m2_SA.to_excel('数据输出/SA_first_M2扣罚标准.xlsx')
+
+#----------------------------------------------------------
 m2_SA = m2_SA[["SA工号","是否免除扣罚"]]
 m2 = pd.merge(m2,m2_SA,on="SA工号",how="left")
 
@@ -105,7 +108,6 @@ for i in range(len(m2)):
     else:
         print("免除扣罚出现问题，请核实！")
 
-#m2.to_excel("SA首次M2单笔扣罚.xlsx")
 m2 = m2[['贷款编号','贷款金额','产品名称','商户','门店','SA工号','SA姓名','最终扣罚','是否免除扣罚','SA最终扣罚']]
 m2.to_excel("数据输出/SA首次M2单笔扣罚.xlsx")
 
