@@ -7,7 +7,7 @@ print("开始计算")
 starttime = datetime.datetime.now()
 
 #导入数据
-three_month_back_data = pd.read_excel("SA退还/三个月还款数据源.xlsx",dtype={'贷款编号':'O'})
+three_month_back_data = pd.read_excel("SA退还数据/三个月还款数据源.xlsx",dtype={'贷款编号':'O'})
 #three_month_back_data['贷款编号'] = three_month_back_data['贷款编号'].astype('O')
 three_month_back_data = three_month_back_data.drop_duplicates("贷款编号")
 three_month_back_data=three_month_back_data.reset_index(drop=True) #重置索引
@@ -51,7 +51,7 @@ for i in tqdm(range(len(three_month_back_data_2))):
 three_month_back_data_2=three_month_back_data_2.reset_index(drop=True)
 
 #结清数据匹配
-settle_data = pd.read_excel("SA退还/结清数据源.xlsx",dtype={'贷款编号':'O'})
+settle_data = pd.read_excel("SA退还数据/结清数据源.xlsx",dtype={'贷款编号':'O'})
 #settle_data['贷款编号'] = settle_data['贷款编号'].astype('O')
 settle_data_1 = pd.merge(settle_data,M2_penalty_all_1,on="贷款编号",how="left")
 settle_data_2 = pd.merge(settle_data,M2_plus_penalty_all_1,on="贷款编号",how="left")
