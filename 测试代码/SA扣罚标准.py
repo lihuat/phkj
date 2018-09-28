@@ -20,7 +20,7 @@ m2 = data[data["首次M2"]==1]
 #透视逾期单数
 m2_over_count = pd.pivot_table(m2,index=['SA工号'],values=['贷款编号'],aggfunc=[len])
 #导入首次M2的注册数据
-m2_zc = pd.read_excel("首次m2/m2首次注册数.xlsx",dtype={'SA工号':'O'})
+m2_zc = pd.read_excel("首次m2/首次M2注册数.xlsx",dtype={'SA工号':'O'})
 m2_over_rate = pd.merge(m2_zc,m2_over_count,on="SA工号",how="left")
 #计算首次M2逾期率
 for i in range(len(m2_over_rate)):

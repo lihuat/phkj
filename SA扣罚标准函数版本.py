@@ -6,7 +6,7 @@ def m2_over_rate():
     data = pd.read_excel("扣罚数据输入/M2M3逾期明细.xlsx", dtype={'贷款编号': 'O', 'SA工号': 'O'})
     m2 = data[data["首次M2"] == 1]
     m2_over_count = pd.pivot_table(m2, index=['SA工号'], values=['贷款编号'], aggfunc=[len])
-    m2_zc = pd.read_excel("扣罚数据输入/m2首次注册数.xlsx", dtype={'SA工号': 'O'})
+    m2_zc = pd.read_excel("扣罚数据输入/首次M2注册数.xlsx", dtype={'SA工号': 'O'})
     m2_over_rate = pd.merge(m2_zc, m2_over_count, on="SA工号", how="left")
     for i in range(len(m2_over_rate)):
         m2_over_rate.loc[i, '首次M2逾期率'] = (m2_over_rate.iloc[i, 3] / m2_over_rate.iloc[i, 2]) * 100

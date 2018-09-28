@@ -20,7 +20,7 @@ m2 = m2[['贷款编号','贷款金额','产品名称','SA工号','SA姓名']]
 #m2['贷款编号'] = m2['贷款编号'].astype('O')
 #m2['SA工号'] = m2['SA工号'].astype('O')
 m2_over=pd.pivot_table(m2,index=['SA工号'],values=['贷款编号'],aggfunc=[len])
-m2_over_rate = pd.read_excel("首次m2/m2首次注册数.xlsx",dtype={'SA工号':'O'})
+m2_over_rate = pd.read_excel("首次m2/首次M2注册数.xlsx",dtype={'SA工号':'O'})
 m2_over = pd.merge(m2_over_rate,m2_over,on="SA工号",how="left",suffixes=('','_y'))
 m2_over['首次M2逾期率'] = 0.0
 

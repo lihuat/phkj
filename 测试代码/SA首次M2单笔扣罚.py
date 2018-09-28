@@ -10,7 +10,7 @@ m2_1 = m2.copy()
 m2_1 = m2_1[["SA工号",'贷款编号']]
 #透视
 m2_over = pd.pivot_table(m2_1,index=['SA工号'],values=['贷款编号'],aggfunc=[len])
-m2_over_rate = pd.read_excel("首次m2/m2首次注册数.xlsx",dtype={'SA工号':'O'})
+m2_over_rate = pd.read_excel("首次m2/首次M2注册数.xlsx",dtype={'SA工号':'O'})
 m2_over = pd.merge(m2_over_rate,m2_over,on="SA工号",how="left",suffixes=('','_y'))
 m2_over['首次M2逾期率'] = 0.0
 
