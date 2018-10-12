@@ -14,16 +14,18 @@ def m2_over_rate():
     m2_over_rate = m2_over_rate[['SA工号', '首次M2逾期率']]
     return m2_over_rate
 
+
 def m2_plus(m2_over_rate):
     data2 = pd.read_excel("扣罚数据输入/M2+逾期明细.xlsx", dtype={'贷款编号': 'O', 'SA工号': 'O'})
+    # M2已经扣的剔除
     def yikou():
         # 汇总首次M2和M2+的已经扣罚和退还的
         data11 = pd.read_excel("扣罚汇总/M2+扣罚汇总.xlsx", dtype={'贷款编号': 'O', 'SA工号': 'O'})
         data22 = pd.read_excel("扣罚汇总/首次M2扣罚汇总.xlsx", dtype={'贷款编号': 'O', 'SA工号': 'O'})
         yikou = pd.concat([data11, data22])
         return yikou
+
     yikou = yikou()
-    # M2已经扣的剔除
     yikou = yikou[['贷款编号', '扣押月份', '退还月份']]
     data_m2_plus = pd.merge(data2, yikou, on="贷款编号", how="left")
 
@@ -84,7 +86,7 @@ def is_mianchu(data_all):
 def save(data_all):
     print("正在保存SA扣罚标准数据")
     data_all = data_all[["SA工号", "SA姓名", "在岗状态", "入岗日期转换", "结算日期", "在职天数", "M3+逾期率(%)", "首次M2逾期率", "是否免除扣罚"]]
-    data_all.to_excel('数据输出/SA扣罚标准.xlsx')
+    data_all.to_excel('数据输出/SA扣罚标准.xlsx',index=False)
 
 
 #SA首次M2单笔扣罚
@@ -212,7 +214,7 @@ def m2_plus_koufa():
 
 def hebing(m2,m2_plus):
     data = pd.concat([m2,m2_plus])
-    data.to_excel("数据输出/SA单笔扣罚.xlsx")
+    data.to_excel("数据输出/SA单笔扣罚.xlsx",index=False)
     print("计算完成，good luck!")
 
 if __name__ == '__main__':
